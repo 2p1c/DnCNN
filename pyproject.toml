@@ -1,0 +1,51 @@
+[project]
+name = "denoise-ugw"
+version = "0.2.0"
+description = "Laser-to-Piezoelectric Signal Mapping for Ultrasonic Guided Waves"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0",
+    "scipy>=1.10",
+    "numpy>=1.24",
+    "matplotlib>=3.7",
+    "pyyaml>=6.0",
+    "tqdm>=4.65",
+    "PyWavelets>=1.4",  # CWT/ICWT transforms for FluxUNet
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ipykernel>=6.0",
+    "ruff>=0.1",
+]
+
+[project.scripts]
+gravity-loop = "src.main_gravity_loop:main"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0",
+    "ipykernel>=6.0",
+]
+
+# ============================================================
+# UV Commands (Recommended)
+# ============================================================
+# 
+# Installation:
+#   uv sync                          # Install all dependencies
+#   uv sync --dev                    # Include dev dependencies
+#
+# Training:
+#   uv run python src/main_gravity_loop.py --sanity-check
+#   uv run python src/main_gravity_loop.py --overfit-test --samples 50 --epochs 50
+#   uv run python src/main_gravity_loop.py --epochs 100
+#
+# Visualization:
+#   uv run python visualize_random_samples.py --num-samples 10
+#
+# Legacy (1D DenoiseNet):
+#   uv run python train_mvp.py --overfit-test
+# ============================================================

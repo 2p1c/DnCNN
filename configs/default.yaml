@@ -1,0 +1,53 @@
+# Data paths (absolute paths for your system)
+# Input: 21×21 Laser ultrasonic (interpolated to 41×41), Target: 41×41 Piezoelectric
+data:
+  noisy_path: "E:/数据/260129/jiguang/21_21.mat" # Laser ultrasonic (21×21)
+  target_path: "E:/数据/260129/yadian250k/41_41.mat" # Piezoelectric ultrasonic (41×41)
+  noisy_grid_size: 21 # Will be bicubic interpolated to target_grid_size
+  target_grid_size: 41
+  spacing: 0.001 # 1mm in meters
+  normalization_type: "bilateral" # bilateral: each signal normalized by its own global stats
+
+# Signal parameters
+signal:
+  sampling_rate: 6.25e6 # 6.25 MHz
+  duration: 160e-6 # 160 microseconds
+  target_length: 1024 # Fixed time-series length
+  center_freq: 200e3 # 200 kHz
+  bandpass_low: 100e3 # 100 kHz
+  bandpass_high: 300e3 # 300 kHz
+
+# CWT Parameters (for DnCNN-CWT model)
+cwt:
+  wavelet: "morlet" # Wavelet type (morlet supported)
+  num_scales: 64 # Frequency resolution (number of scales)
+  f_min: 50000 # Minimum frequency (Hz)
+  f_max: 500000 # Maximum frequency (Hz)
+
+# Model parameters
+model:
+  # Model type: "denoise_net" (original 1D) or "dncnn_cwt" (new 2D with CWT)
+  type: "dncnn_cwt"
+
+  # DnCNN-CWT specific parameters
+  channels: 64 # Feature channels (reduce to 32 for faster CPU training)
+  num_blocks: 8 # Number of ResNet blocks (reduce to 4 for faster training)
+
+  # Original DenoiseNet parameters (used when type="denoise_net")
+  in_channels: 1
+  hidden_channels: [64, 128]
+  kernel_sizes: [7, 5]
+
+# Training parameters
+training:
+  batch_size: 32
+  learning_rate: 0.002 # Increased for faster convergence
+  epochs: 100
+  device: "cpu" # CPU-only training
+  num_workers: 0 # Windows compatibility
+
+# Overfit test settings
+overfit_test:
+  enabled: true
+  num_samples: 100
+  epochs: 50

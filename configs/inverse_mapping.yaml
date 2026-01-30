@@ -1,0 +1,46 @@
+# Data paths (absolute paths for your system)
+data:
+  # Inverse Mapping Configuration:
+  # Input (Noisy/Source) = Averaged Data (11x11)
+  # Target (Clean/Ground Truth) = Piezo Data (51x51)
+  noisy_path: "E:/数据/260126/DnCNN/averaged/11_11.mat"
+  target_path: "E:/数据/260127/yadian200k/51_51.mat"
+  noisy_grid_size: 11
+  target_grid_size: 51
+  spacing: 0.001  # 1mm in meters
+  normalization_type: "instance"  # Per-sample normalization (x-u)/s
+
+# Signal parameters
+signal:
+  sampling_rate: 6.25e6  # 6.25 MHz
+  duration: 160e-6       # 160 microseconds
+  target_length: 1024    # Fixed time-series length
+  center_freq: 200e3     # 200 kHz
+  bandpass_low: 100e3    # 100 kHz
+  bandpass_high: 300e3   # 300 kHz
+
+# Model parameters
+model:
+  in_channels: 1
+  hidden_channels: [64, 128]
+  kernel_sizes: [7, 5]
+
+# Model parameters
+model:
+  in_channels: 1
+  hidden_channels: [64, 128, 256]  # 3-layer architecture
+  kernel_sizes: [7, 5, 3]
+
+# Training parameters
+training:
+  batch_size: 32
+  learning_rate: 0.001
+  epochs: 100
+  device: "cpu"  # CPU-only training
+  num_workers: 0  # Windows compatibility
+  
+# Overfit test settings
+overfit_test:
+  enabled: true
+  num_samples: 100
+  epochs: 50
